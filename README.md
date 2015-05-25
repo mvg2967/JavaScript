@@ -1,1 +1,1 @@
-# Javascript
+Having fun with JavaScript
