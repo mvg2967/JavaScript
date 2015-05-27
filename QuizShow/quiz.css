@@ -3,6 +3,11 @@ b {
     margin: .5em 0 1em;
     display: block;
 }
-lable {
-    display: block;
+
+.questions lable {
+    display: inline-block;
+}
+
+.questions input{
+	display: inlne-block;
 }

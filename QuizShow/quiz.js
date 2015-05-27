@@ -24,6 +24,9 @@ var wrapper = document.createElement('div');
 var choices = allQuestions[curQuestion].choices;
 var bold = document.createElement('b');
 var submit = document.createElement('button');
+var lable = document.createElement('lable');
+var input = document.createElement('input');
+var p_score = document.createElement('p');
 
 // add elements to the DOM
 window.onload = function(){
@@ -32,18 +35,19 @@ window.onload = function(){
 	//add question
 	bold.appendChild(document.createTextNode(allQuestions[curQuestion].question));
 	wrapper.appendChild(bold);
-
+	var questions = document.createElement('div');
+	questions.setAttribute('class','questions');
+	wrapper.appendChild(questions);
 	for(var i = 0; i < choices.length; i++){
-		var lable = document.createElement('lable');
-		var input = document.createElement('input');
+		lable = document.createElement('lable');
+		input = document.createElement('input');
 		
 		input.setAttribute('type', 'radio');
 		input.setAttribute('name','choice');
 		input.setAttribute('value', i);
-		
-		lable.appendChild(input);
+		questions.appendChild(input);
 		lable.appendChild(document.createTextNode(choices[i]));
-		wrapper.appendChild(lable);
+		questions.appendChild(lable);
 	}
 	
 	// sumbit button
@@ -51,41 +55,32 @@ window.onload = function(){
 	submit.setAttribute('id', 'submit');
 	wrapper.appendChild(submit);
 	var button_sumbit = document.getElementById('sumbit');
+	wrapper.appendChild(p_score);
+	p_score.innerHTML = "score: " + score + " out of " + 3;
 
 }
-
-
-
-function checkAnswer(){
-	var radios = document.getElementsByName('choice');
-	for(var i = 0; i < radios.length; i++){
-		radios[i].onclick = function(){
-			if(this.value == allQuestions[curQuestion].correctAnswer){
-				score += 1;
-			}
-		};
-	}
-}
-
 
 submit.addEventListener('click', function(){
-	var p = document.createElement('p');
 	var radios = document.getElementsByName('choice');
-	var chosen;
+    for (var i=0; i < radios.length; i++){
+        if(radios[i].checked){
+			if(radios[i].value == allQuestions[curQuestion].correctAnswer){
+				score += 1;
+			}
+        }
+    }
+	p_score.innerHTML = "score: " + score + " out of " + 3;
+	curQuestion++;
+	if(curQuestion == 3){
+		curQuestion = 0;
+		score = 0;
+		p_score.innerHTML = "score: " + score + " out of " + 3;
+	}
+	bold.innerHTML = allQuestions[curQuestion].question;
+	var radios = document.getElementsByTagName('lable');
 	for(var i = 0; i < radios.length; i++){
-		if(radios[i].checked){
-			chosen = radios[i].value;
-		}
+		radios[i].innerHTML = allQuestions[curQuestion].choices[i];
 	}
-	if(chosen == allQuestions[0].correctAnswer){
-		p.appendChild(document.createTextNode('Correct!'))
-		p.setAttribute('class','correct');
-		wrapper.appendChild(p);
-	}
-	else{
-		p.appendChild(document.createTextNode('That is not correct, please try again.'));
-		p.setAttribute('class', 'wrong');
-		wrapper.appendChild(p);
-	}
+	
 });
 
